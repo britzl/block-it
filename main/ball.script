@@ -1,0 +1,57 @@
+go.property("speed", 60)
+
+function init(self)
+	math.randomseed(os.time())
+	self.direction = vmath.vector3()
+	self.initial_speed = self.speed
+	self.initial_position = go.get_position()
+	self.outside = false
+end
+
+function fixed_update(self, dt)
+	-- move the ball in the direction of travel at the current speed
+	local pos = go.get_position()
+	pos = pos + self.direction * self.speed * dt
+	go.set_position(pos)
+
+	-- if the ball has moved more than 600 pixels from
+	-- it is initial position it is well outside of the box
+	if vmath.length(pos - self.initial_position) > 600 then
+		msg.post("game", "restart")
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("contact_point_response") and not self.outside then
+		-- check if ball has penetrated the wall too much 
+		-- nd should be considered outside
+		if message.distance > 5 then
+			self.outside = true
+			return
+		end
+
+		-- bounce
+		-- https://stackoverflow.com/a/573206
+		local normal = message.normal
+		local u = vmath.dot(self.direction, normal) * normal
+		local w = self.direction - u
+		self.direction = w - u
+
+		-- separate collision
+		local pos = go.get_position()
+		pos = pos + normal * message.distance
+		go.set_position(pos)
+		self.speed = self.speed + 10
+
+	elseif message_id == hash("restart") then
+		-- random initial direction of travel
+		local angle = math.random(1, 360)
+		self.direction.x = math.sin(math.rad(angle))
+		self.direction.y = math.cos(math.rad(angle))
+
+		-- reset ball values
+		go.set_position(self.initial_position)
+		self.speed = self.initial_speed
+		self.outside = false
+	end
+end

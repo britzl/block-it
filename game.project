@@ -1,12 +1,26 @@
 [bootstrap]
-main_collection = /main/main.collectionc
+main_collection = /main/game.collectionc
 
 [script]
 shared_state = 1
 
 [display]
-width = 960
-height = 640
+width = 640
+height = 1136
 
 [android]
 input_method = HiddenInputField
+
+[project]
+title = Block-it
+
+[render]
+clear_color_red = 0.997
+clear_color_green = 0.329
+clear_color_blue = 0.187
+clear_color_alpha = 1.0
+
+[physics]
+gravity_y = 0.0
+use_fixed_timestep = 1
+

@@ -1,13 +1,7 @@
-# Welcome to Defold
+## Block it
 
-This project was created from the "empty" project template.
+This is a Defold version of the "HTML5 prototype of 'Block it' using Box2D in an Arcade way" by Emanuele Feronato:
 
-The settings in ["game.project"](defold://open?path=/game.project) are all the default. A bootstrap empty ["main.collection"](defold://open?path=/main/main.collection) is included.
+https://www.emanueleferonato.com/2022/08/26/html5-prototype-of-block-it-using-box2d-in-an-arcade-way-powered-by-phaser-and-written-in-typescript-turning-walls-on-and-off-introducing-energy/
 
-Check out [the documentation pages](https://defold.com/learn) for examples, tutorials, manuals and API docs.
-
-If you run into trouble, help is available in [our forum](https://forum.defold.com).
-
-Happy Defolding!
-
----
+HTML5 Demo available at https://britzl.github.io/Block-it

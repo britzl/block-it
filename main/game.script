@@ -1,0 +1,54 @@
+local function activate_walls()
+	msg.post("walls#collisionobject", "enable")
+	go.set("walls#left", "tint.w", 1.0)
+	go.set("walls#right", "tint.w", 1.0)
+	go.set("walls#top", "tint.w", 1.0)
+	go.set("walls#bottom", "tint.w", 1.0)
+end
+
+local function deactivate_walls()
+	msg.post("walls#collisionobject", "disable")
+	go.set("walls#left", "tint.w", 0.5)
+	go.set("walls#right", "tint.w", 0.5)
+	go.set("walls#top", "tint.w", 0.5)
+	go.set("walls#bottom", "tint.w", 0.5)
+end
+
+function init(self)
+	go.animate("walls", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 30)
+	msg.post(".", "acquire_input_focus")
+	msg.post("#", "restart")
+end
+
+function update(self, dt)
+	label.set_text("energy#label", tostring(math.floor(self.energy)))
+	if self.pressed then
+		self.energy = self.energy - 1000 * dt
+		if self.energy < 0 then
+			self.energy = 0
+			self.pressed = false
+			deactivate_walls()
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("restart") then
+		self.energy = 5000
+		self.pressed = false
+		deactivate_walls()
+		msg.post("ball", "restart")
+	end
+end
+
+function on_input(self, action_id, action)
+	if self.energy > 0 then
+		if action.pressed then
+			self.pressed = true
+			activate_walls()
+		elseif action.released then
+			self.pressed = false
+			deactivate_walls()
+		end
+	end
+end
