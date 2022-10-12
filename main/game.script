@@ -15,9 +15,10 @@ local function deactivate_walls()
 end
 
 function init(self)
-	go.animate("walls", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 30)
+	msg.post("@render:", "use_fixed_fit_projection")
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "restart")
+	go.animate("walls", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, 30)
 end
 
 function update(self, dt)
